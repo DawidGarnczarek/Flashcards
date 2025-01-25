@@ -1,11 +1,14 @@
+import { FlashcardsProvider } from '@/services/flashcardsContext';
 import { Stack } from 'expo-router';
 
 export default function RootLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <FlashcardsProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </FlashcardsProvider>
   );
 }
