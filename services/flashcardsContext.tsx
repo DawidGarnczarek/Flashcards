@@ -5,6 +5,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { getFlashcards } from './realmService';
@@ -18,6 +19,7 @@ export enum PlayMode {
 export interface FlashcardsContextValue {
   flashcards: Flashcard[];
   playMode: PlayMode;
+  selectedFlashcards: Flashcard[];
   setLearnedPlayMode: () => void;
   setNotLearnedPlayMode: () => void;
 }
@@ -38,6 +40,22 @@ export const FlashcardsProvider = ({ children }: any) => {
     setPlayMode(PlayMode.NOT_LEARNED);
   };
 
+  const flashCardsToLearn = flashcards.filter(
+    flashcard => flashcard.isLearned === false
+  );
+  const flashCardsLearned = flashcards.filter(
+    flashcard => flashcard.isLearned === true
+  );
+  const selectedFlashcards = useMemo(() => {
+    if (playMode === PlayMode.LEARNED) {
+      return flashCardsLearned;
+    }
+    if (playMode === PlayMode.NOT_LEARNED) {
+      return flashCardsToLearn;
+    }
+    return [];
+  }, [flashcards, playMode]);
+
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
@@ -54,6 +72,7 @@ export const FlashcardsProvider = ({ children }: any) => {
     <FlashcardsContext.Provider
       value={{
         flashcards,
+        selectedFlashcards: selectedFlashcards,
         playMode,
         setLearnedPlayMode,
         setNotLearnedPlayMode,

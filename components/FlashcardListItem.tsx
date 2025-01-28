@@ -4,45 +4,28 @@ import { Ionicons } from '@expo/vector-icons'; // Z biblioteki expo/vector-icons
 import { router } from 'expo-router';
 import { useFlashcards } from '@/services/flashcardsContext';
 
-export const FlashcardsBox = ({
-  number,
-  areLearned,
+export const FlashcardListItem = ({
+  id,
+  frontFirstText,
+  backFirstText,
 }: {
-  number: number;
-  areLearned: boolean;
+  id: string;
+  frontFirstText: string;
+  backFirstText: string;
 }) => {
-  const { setLearnedPlayMode, setNotLearnedPlayMode } = useFlashcards();
-
-  const handlePlay = () => {
-    router.push('/learn');
-    areLearned ? setLearnedPlayMode() : setNotLearnedPlayMode();
-  };
-
-  const handleOpenList = () => {
-    router.push('/listView');
-    areLearned ? setLearnedPlayMode() : setNotLearnedPlayMode();
-  };
+  const handleEdit = () => {};
+  const handleDelete = () => {};
 
   return (
     <View style={styles.container}>
-      {/* Ikona "X" */}
-      {areLearned ? (
-        <Ionicons name="checkmark-done-circle-outline" size={40} color="grey" />
-      ) : (
-        <Ionicons name="checkmark-done-circle-sharp" size={40} color="green" />
-      )}
-
-      <Text style={styles.text}>
-        {number} {areLearned ? 'to learn' : 'learnded'}
-      </Text>
-
-      {/* Przyciski */}
+      <Text style={styles.text}>{frontFirstText}</Text>
+      <Text style={styles.text}>{backFirstText}</Text>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleOpenList}>
+        <TouchableOpacity style={styles.button} onPress={handleEdit}>
           <Ionicons name="pencil-outline" size={20} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handlePlay}>
-          <Ionicons name="play-outline" size={20} color="white" />
+        <TouchableOpacity style={styles.button} onPress={handleDelete}>
+          <Ionicons name="trash-outline" size={20} color="white" />
         </TouchableOpacity>
       </View>
     </View>
